@@ -12,13 +12,6 @@ jobs:
       - name: Pull Fortify Docker Image
         run: docker pull fortifydocker/fortify-ci-tools
 
-      - name: Run Fortify Scan
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/workspace \
-            fortifydocker/fortify-ci-tools \
-            scan --source /workspace --build-id ${{ github.run_id }}
-
     # Step 2: Install Fortify CLI (adjust the path and version)
       - name: Install Fortify CLI
         run: |
