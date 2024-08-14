@@ -24,9 +24,6 @@ jobs:
       # Checks out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      # Sets up Docker
-      - name: Set up Docker
-        uses: actions/setup-docker@v4
 
       # Pulls the Fortify Docker image
       - name: Pull Fortify Docker Image
