@@ -18,3 +18,26 @@ jobs:
             -v ${{ github.workspace }}:/workspace \
             fortifydocker/fortify-ci-tools \
             scan --source /workspace --build-id ${{ github.run_id }}
+
+    # Step 2: Install Fortify CLI (adjust the path and version)
+      - name: Install Fortify CLI
+        run: |
+          # Assuming you have a download link for Fortify CLI
+          wget <fortify-cli-download-url> -O fortify-cli.tar.gz
+          tar -xzf fortify-cli.tar.gz
+          export PATH=$PATH:$GITHUB_WORKSPACE/fortify-cli/bin
+
+      # Step 3: Clean previous scans (optional)
+      - name: Clean Fortify Scan
+        run: |
+          sourceanalyzer -b my-build-id -clean
+
+      # Step 4: Run Fortify CLI Scan
+      - name: Run Fortify CLI Scan
+        run: |
+          sourceanalyzer -b my-build-id -scan -f results.fpr
+
+      # Step 5: Upload the scan results to Fortify SSC
+      - name: Upload Fortify Results
+        run: |
+          fortifyclient uploadFPR -url <ssc-url> -authtoken <auth-token> -file results.fpr
