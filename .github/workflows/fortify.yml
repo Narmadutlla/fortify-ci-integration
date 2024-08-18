@@ -1,0 +1,60 @@
+name: Fortify Scan
+on: [push, pull_request]
+
+jobs:
+  fortify_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Pull Fortify Docker Image
+        run: docker pull fortifydocker/fortify-ci-tools
+      - name: Run Fortify Scan
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            fortifydocker/fortify-ci-tools \
+            scan --source /workspace --build-id ${{ github.run_id }}
+    # Step 2: Install Fortify CLI (adjust the path and version)
+      - name: Install Fortify CLI
+        run: |
+          # Assuming you have a download link for Fortify CLI
+          wget <fortify-cli-download-url> -O fortify-cli.tar.gz
+          tar -xzf fortify-cli.tar.gz
+          export PATH=$PATH:$GITHUB_WORKSPACE/fortify-cli/bin
+
+      # Step 4: Run Fortify CLI Scan
+      - name: Run Fortify CLI Scan
+        run: |
+          sourceanalyzer -b my-build-id -scan -f results.fpr
+
+      # Step 5: Upload the scan results to Fortify SSC
+      - name: Upload Fortify Results
+        run: |
+          fortifyclient uploadFPR -url <ssc-url> -authtoken <auth-token> -file results.fpr
+
+          # Step 6: Install Fortify ScanCentral Client
+      - name: Install Fortify ScanCentral Client
+        run: |
+          # Assuming you have a download link for ScanCentral Client
+          wget <fortify-scancentral-download-url> -O scancentral-client.tar.gz
+          tar -xzf scancentral-client.tar.gz
+          export PATH=$PATH:$GITHUB_WORKSPACE/scancentral-client/bin
+
+      # Step 7: Submit the code for scanning via ScanCentral
+      - name: Run Fortify ScanCentral Scan
+        run: |
+          scancentral submit -bt . -url <ssc-url> -authtoken <auth-token> \
+          -uploadFPR -b my-build-id -fp results.fpr
+
+      # Step 8: Check the scan status
+      - name: Check Scan Status
+        run: |
+          scancentral status -b my-build-id
+
+      # Step 9: Upload the scan results to Fortify SSC
+      - name: Upload Fortify Results
+        run: |
+          fortifyclient uploadFPR -url <ssc-url> -authtoken <auth-token> -file results.fpr
