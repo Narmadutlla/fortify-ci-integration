@@ -24,12 +24,12 @@ jobs:
       # Step 3: Build and tag Docker image
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:latest .
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/my-fortify-image:latest .
 
       # Step 4: Push Docker image to Docker Hub
       - name: Push Docker image to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/my-fortify-image:latest
 
       # Step 5: Configure AWS credentials
       - name: Configure AWS credentials
@@ -47,7 +47,7 @@ jobs:
       # Step 7: Tag Docker image for ECR
       - name: Tag Docker image for ECR
         run: |
-          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:latest ${{ secrets.ECR_REPOSITORY_URI }}:latest
+          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/my-fortify-image:latest ${{ secrets.ECR_REPOSITORY_URI }}:latest
 
       # Step 8: Push Docker image to ECR
       - name: Push Docker image to ECR
