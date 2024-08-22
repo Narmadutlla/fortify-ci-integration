@@ -24,11 +24,11 @@ jobs:
 
       # Step 3: Pull the Docker image
       - name: Pull Docker image
-        run: docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/my-fortify-image:latest
+        run: docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/fortify-image
 
       # Step 4: Run the Docker container
       - name: Run Docker container
-        run: docker run -it my-fortify-image:latest
+        run: docker run -it fortify-image
 
       # Step 5: Verify the Docker container is running
       - name: List running Docker containers
