@@ -23,13 +23,12 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       # Step 3: Pull the Docker image
-      - name: Pull Docker image
-        run: docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/fortify-image
+      - name: Pull Docker Image
+        run: docker pull narmadutlla/fortify-image:latest
 
-      # Step 4: Run the Docker container
-      - name: Run Docker container
-        run: docker run -it narmadutlla/fortify-image
-
-      # Step 5: Verify the Docker container is running
-      - name: List running Docker containers
-        run: docker ps
+      - name: Run Docker Image
+        run: |
+          docker run -it narmadutlla/fortify-image \
+            java -jar /app/nexus-iq-cli.jar \
+            --application-id <Your_Application_ID> \
+            --server-url <Your_Server_URL> 
