@@ -28,7 +28,7 @@ jobs:
 
       # Step 4: Run the Docker container
       - name: Run Docker container
-        run: docker run -dt fortify-image
+        run: docker run -dt narmadutlla/fortify-image
 
       # Step 5: Verify the Docker container is running
       - name: List running Docker containers
