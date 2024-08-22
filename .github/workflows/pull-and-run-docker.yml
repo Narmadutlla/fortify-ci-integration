@@ -26,9 +26,11 @@ jobs:
       - name: Pull Docker Image
         run: docker pull narmadutlla/fortify-image:latest
 
+      # Step 4: Run Docker Image
       - name: Run Docker Image
         run: |
+          echo "Running Docker container..."
           docker run -it narmadutlla/fortify-image \
             java -jar /app/nexus-iq-cli.jar \
-            --application-id <Your_Application_ID> \
-            --server-url <Your_Server_URL> 
+            --application-id "<Your_Application_ID>" \
+            --server-url "<Your_Server_URL>"
