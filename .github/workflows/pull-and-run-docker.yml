@@ -13,21 +13,6 @@ jobs:
     steps:
       # Step 1: Checkout the repository
       - name: Checkout code
-        uses: actions/checkout@v4name: Pull and Run Docker Image
-
-on:
-  workflow_dispatch:  # Allows manual triggering of the workflow from the Actions tab
-  push: 
-    branches: 
-      - main
-
-jobs:
-  pull_and_run:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Step 1: Checkout the repository
-      - name: Checkout code
         uses: actions/checkout@v4
 
       # Step 2: Log in to Docker Hub
@@ -48,23 +33,3 @@ jobs:
       # Step 5: Verify the Docker container is running
       - name: List running Docker containers
         run: docker ps
-
-      # Step 2: Log in to Docker Hub
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-      # Step 3: Pull the Docker image
-      - name: Pull Docker Image
-        run: docker pull narmadutlla/fortify-image:latest
-
-      # Step 4: Run Docker Image
-      - name: Run Docker Image
-        run: |
-          echo "Running Docker container..."
-          docker run narmadutlla/fortify-image \
-            java -jar /app/nexus-iq-cli.jar \
-            --application-id "<Your_Application_ID>" \
-            --server-url "<Your_Server_URL>"
